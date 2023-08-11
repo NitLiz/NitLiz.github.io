@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotel List</title>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+
+
+</head>
+<body>
+    <h1>Hotel List</h1>
+    <form method="GET" action="/">
+        <label for="search">Search:</label>
+        <input type="text" name="search" value="{{ search }}">
+        <button type="submit">Search</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th><a href="?sort=name">Hotel Name</a></th>
+                <th><a href="?sort=price">Price</a></th>
+                <th><a href="?sort=rating">Rating</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for hotel_result in data %}
+            <tr>
+                <td>{{ hotel_result.find('{http://TekTravel/HotelBookingApi}HotelInfo/{http://TekTravel/HotelBookingApi}HotelName').text }}</td>
+                <td>{{ hotel_result.find('{http://TekTravel/HotelBookingApi}MinHotelPrice').get('PrefPrice') }}</td>
+                <td>{{ hotel_result.find('{http://TekTravel/HotelBookingApi}HotelInfo/{http://TekTravel/HotelBookingApi}Rating').text }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div>
+        <a href="?page={{ prev_page }}">Previous</a>
+        <span>Page {{ current_page }} of {{ total_pages }}</span>
+        <a href="?page={{ next_page }}">Next</a>
+    </div>
+</body>
+</html>
